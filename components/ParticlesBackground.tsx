@@ -7,19 +7,21 @@ import type { ISourceOptions } from "@tsparticles/engine";
 
 export default function ParticlesBackground() {
   const [ready, setReady] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
+    // Runs only in the browser, so window is safe to use here
+    setReduceMotion(
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+
     initParticlesEngine(async (engine) => {
       await loadSlim(engine);
     }).then(() => setReady(true));
   }, []);
 
-  const options = useMemo<ISourceOptions>(() => {
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    return {
+  const options = useMemo<ISourceOptions>(
+    () => ({
       fullScreen: { enable: false },
       background: { color: { value: "transparent" } },
       fpsLimit: 60,
@@ -51,8 +53,9 @@ export default function ParticlesBackground() {
         },
         modes: { grab: { distance: 160, links: { opacity: 0.5 } } },
       },
-    };
-  }, []);
+    }),
+    [reduceMotion]
+  );
 
   if (!ready) return null;
 
