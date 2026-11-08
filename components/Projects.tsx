@@ -10,7 +10,7 @@ const PROJECTS: ProjectCardProps[] = [
     description:
       "AI-driven healthcare platform for automated medical certificate generation and real-time medical processing using OCR and ClinicalBERT.",
     tech: ["FastAPI", "Supabase", "Tesseract OCR", "ClinicalBERT"],
-    imageSrc: "/images/projects/Neurax.jpeg",
+    imageSrc: "/images/projects/NeuraX.jpeg",
 
   },
   {
