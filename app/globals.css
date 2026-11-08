@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------
+   Tailwind v4 CSS-first theme (replaces tailwind.config.ts)
+   Defining these under @theme auto-generates utilities:
+   bg-navy, text-navy, border-navy, bg-accent, text-accent,
+   text-muted, font-display, font-body, etc.
+--------------------------------------------------- */
+@theme {
+  --color-bg-start: #c7d2fe;
+  --color-bg-end: #dbeafe;
+  --color-navy: #1e3a5f;
+  --color-navy-deep: #142a44;
+  --color-accent: #3b82f6;
+  --color-accent-soft: #60a5fa;
+  --color-muted: #64748b;
+  --color-card: #ffffff;
+
+  /* next/font sets --font-display-sans / --font-body-sans on <html>;
+     we map them here to the font-display / font-body utilities. */
+  --font-display: var(--font-display-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-body-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--color-navy);
+  background-image: linear-gradient(
+      180deg,
+      var(--color-bg-start) 0%,
+      var(--color-bg-end) 45%,
+      #f8fafc 100%
+    ),
+    radial-gradient(circle, rgba(30, 58, 95, 0.07) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    22px 22px;
+  background-position:
+    0 0,
+    0 0;
+  background-attachment: fixed, fixed;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
+/* Reusable component-level utilities */
+@layer components {
+  .section-shell {
+    @apply mx-auto w-full max-w-6xl px-6 sm:px-8 lg:px-10;
+  }
+
+  .section-label {
+    @apply mb-3 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent;
+  }
+
+  .card-surface {
+    @apply rounded-2xl border border-white/60 bg-white/80 shadow-[0_8px_30px_-12px_rgba(30,58,95,0.25)] backdrop-blur-sm transition-all duration-300;
+  }
+
+  .card-surface:hover {
+    @apply -translate-y-1 shadow-[0_20px_40px_-15px_rgba(30,58,95,0.35)];
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_-8px_rgba(59,130,246,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#2f6fe0] hover:shadow-[0_14px_30px_-8px_rgba(59,130,246,0.75)] active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-navy/15 bg-white/70 px-6 py-3 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent active:translate-y-0;
+  }
+
+  .tag-chip {
+    @apply rounded-full border border-accent/20 bg-accent/8 px-3 py-1 text-xs font-medium text-navy/80 transition-all duration-300 hover:-translate-y-0.5 hover:scale-105 hover:border-accent hover:bg-accent hover:text-white hover:shadow-[0_10px_20px_-8px_rgba(59,130,246,0.55)];
+  }
+
+  /* Animated underline hover for the main section headings
+     (About, Experience, Projects, Skills, Contact) */
+  .section-heading {
+    @apply relative inline-block cursor-default transition-colors duration-300 hover:text-accent;
+  }
+
+  .section-heading::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    height: 3px;
+    width: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-accent-soft));
+    transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .section-heading:hover::after {
+    width: 100%;
+  }
+
+  .group:hover .section-heading {
+    color: var(--color-accent);
+  }
+
+  .group:hover .section-heading::after {
+    width: 100%;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
